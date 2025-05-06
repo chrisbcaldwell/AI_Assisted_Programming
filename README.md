@@ -14,6 +14,30 @@ Return to an earlier assignment in the course: [Go for Statistics](https://githu
 
 ### AI-Generated Code with ChatGPT
 ChatGPT logs can be seen here:
-* Text file
-* Markdown
+* [Text file](chatgptNewCode.txt)
+* [Markdown](chatgptNewCode.md)
+
+In the original assignment [Go for Statistics](https://github.com/chrisbcaldwell/OLS_Comparison) it was suggested to try using the [montanaflynn/stats package](https://github.com/montanaflynn/stats) to perform simple linear regression on [Anscombe's Quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) data.  ChatGPT was asked to perform this task:
+
+> Please write a Go program that performs linear regression on the Anscombe's Quartet data
+
+The resulting program calculated _S<sub>x</sub>_, _S<sub>y</sub>_, _S<sub>xx</sub>_, and _S<sub>xy</sub>_, then calculated slope and intercept using
+```
+slope := (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX)
+intercept := (sumY - slope*sumX) / n
+```
+This method of course gives correct answers for a single independent variable.  In the case where more than one indpendent variable is used it would be nice to have a program that can handle that, first using the suggested montanaflynn/stats package:
+
+> Rewrite the code to use the stats package at github.com/montanaflynn/stats
+
+ChatGPT gave a mostly valid answer, with a key mistake:
+```
+slope, intercept, err := stats.LinearRegression(paired)
+```
+
+The function `stats.LinearRegression()` returns coordinate pairs that fall on the regression line, using the input data's _x_ values, not a slope and intercept.  This will be revisited shortly.
+
+Next other package options were explored:
+
+> Is there another package besides github.com/montanaflynn/stats that has a better linear regression function?
 
