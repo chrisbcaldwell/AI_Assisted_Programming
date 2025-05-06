@@ -26,7 +26,7 @@ The resulting program calculated _S<sub>x</sub>_, _S<sub>y</sub>_, _S<sub>xx</su
 slope := (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX)
 intercept := (sumY - slope*sumX) / n
 ```
-This method of course gives correct answers for a single independent variable.  In the case where more than one indpendent variable is used it would be nice to have a program that can handle that, first using the suggested montanaflynn/stats package:
+This method of course gives correct answers, but it would be nice to avoid writing a linear regression formula, first using the suggested montanaflynn/stats package:
 
 > Rewrite the code to use the stats package at github.com/montanaflynn/stats
 
@@ -41,3 +41,44 @@ Next other package options were explored:
 
 > Is there another package besides github.com/montanaflynn/stats that has a better linear regression function?
 
+Three packages were suggested:
+1. `gonum/stat` from `gonum.org/v1/gonum` - a valid response
+2. `gostat` from `github.com/matrixorigin/simdcsv` - this package does not exist; the package address is for a CSV parser
+3. `golearn` from `github.com/sjwhitworth/golearn` - a partially valid response; linear regression functions are in `golearn/linear_models`
+
+Code was given only for the `gonum/stat` option (I wish it had tried #2!).  Like before, there were instances of functions using the wrong number of inputs and types.
+
+Because a working program had already been implemented using `montanaflynn/stats`, repairing the code was attempted in ChatGPT:
+
+> in montanaflynn/stats, the function stats.LinearRegression should return a series of coordinate pairs and error, not slope, intercept, and error
+
+In this response the earlier error was corrected.  Slope and intercept were calculated using the first two coordinate pairs returned:
+
+```
+// Calculate slope and intercept
+		if len(predictedCoords) > 0 {
+			// Take first two coordinates for calculating slope and intercept
+			slope := (predictedCoords[1].Y - predictedCoords[0].Y) / (predictedCoords[1].X - predictedCoords[0].X)
+			intercept := predictedCoords[0].Y - slope*predictedCoords[0].X
+
+			fmt.Printf("  Slope:     %.4f\n", slope)
+			fmt.Printf("  Intercept: %.4f\n", intercept)
+			fmt.Printf("  Equation:  y = %.4fx + %.4f\n", slope, intercept)
+```
+
+In the fourth data set of Anscombe's Quartet, this presents a problem: all but one coordinate pair uses the same _x_ value.  This would, using the response's method, return an error by dividing by zero when calculating slope.  This was addressed next:
+
+> what if the first two data points have the same x value?
+
+ChapGPT responded by checking if the first two _x_ values are equal:
+
+```
+// Check for duplicate X values
+	if coords[0].X == coords[1].X {
+		return 0, 0, fmt.Errorf("duplicate X values detected: cannot compute slope")
+	}
+```
+
+This of course is insufficient; we need to only abandon the slope calculation if _all_ _x_ values are equal:
+
+> if the first two x values are equal, could we check to see if there are any two x values that are different and use those coordinates to get a slope?
