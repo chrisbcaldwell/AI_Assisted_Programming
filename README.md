@@ -11,9 +11,11 @@ Return to an earlier assignment in the course: [Go for Statistics](https://githu
 
 ### AI-Assisted Programming with GitHub Copilot
 
-GitHub Copilot was used to suggest edits to the Go code in [Go for Statistics](https://github.com/chrisbcaldwell/OLS_Comparison).
+GitHub Copilot was used to suggest edits to the Go code in [Go for Statistics](https://github.com/chrisbcaldwell/OLS_Comparison).  See [the Copilot transcript](https://github.com/chrisbcaldwell/AI_Assisted_Programming/blob/main/copilot_GPT-4o.md) for full details.
 
 > chrisbcaldwell: what's the best way to implement R squared and standard error of regression into this code?
+
+The result of this query was great!  Copilot suggesting the code below to implement R-squared and standard error into whaat I had aleady written.  I could not find errors in a quick code review.
 
 ```
 // calculateMetrics computes R-squared and standard error of regression
@@ -47,6 +49,8 @@ func calculateMetrics(data stats.Series, slope, intercept float64) (rSquared flo
 	return rSquared, stdError, nil
 }
 ```
+
+Copilot seems to work well in its domain.
 
 ### AI-Generated Code with ChatGPT
 ChatGPT logs can be seen here:
@@ -198,3 +202,12 @@ My thoughts on these suggestions are as follows:
 5. **Optimization:** Data structure efficiency is a tradeoff while using `montanaflynn/stats`; the `Series` and `Coordinate` types used in the package break the data into coordinate pairs.  Linear regression is a straight-forward matrix calculation and something more resembling a data frame in R or Python would perform much better.
 6. **Documentation:** I think my code sufficiently descsribes its goals, given that the user should already be experienced in statistical methods.  This is easily actionable advice though and I will check to see what I can improve.
 7. **Linear algebra library:** This is the best suggestion offered, and seeing it as the very last one is not encouraging.
+
+### Conclusions
+
+Copilot had many advantages over ChatGPT, even using the same underlying model GPT-4o:
+* **Ease of use:** Copilot is already integrated into VS Code, no toggling between a coding and browser window is not necessary.
+* **Accuracy:** Copilot had a better answer in my limited testing
+* **Guidance:** The interface between VS Code and Copilot includes suggested actions that I found useful
+
+ChatGPT might have an advantage in ubiquity, making it easier for reproducible results.  This advantage is small, primarily because in the realm of coding, most users will be able to access Copilot and likely already have it enabled.
