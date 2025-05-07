@@ -11,6 +11,42 @@ Return to an earlier assignment in the course: [Go for Statistics](https://githu
 
 ### AI-Assisted Programming with GitHub Copilot
 
+GitHub Copilot was used to suggest edits to the Go code in [Go for Statistics](https://github.com/chrisbcaldwell/OLS_Comparison).
+
+> chrisbcaldwell: what's the best way to implement R squared and standard error of regression into this code?
+
+```
+// calculateMetrics computes R-squared and standard error of regression
+func calculateMetrics(data stats.Series, slope, intercept float64) (rSquared float64, stdError float64, err error) {
+	if len(data) < 2 {
+		return math.NaN(), math.NaN(), errors.New("not enough data points")
+	}
+
+	var ssRes, ssTot, meanY float64
+	n := float64(len(data))
+
+	// Calculate mean of Y
+	for _, point := range data {
+		meanY += point.Y
+	}
+	meanY /= n
+
+	// Calculate SS_res and SS_tot
+	for _, point := range data {
+		predictedY := slope*point.X + intercept
+		ssRes += math.Pow(point.Y-predictedY, 2)
+		ssTot += math.Pow(point.Y-meanY, 2)
+	}
+
+	// Calculate R-squared
+	rSquared = 1 - (ssRes / ssTot)
+
+	// Calculate Standard Error
+	stdError = math.Sqrt(ssRes / (n - 2))
+
+	return rSquared, stdError, nil
+}
+```
 
 ### AI-Generated Code with ChatGPT
 ChatGPT logs can be seen here:
