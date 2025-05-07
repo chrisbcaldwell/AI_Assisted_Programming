@@ -155,7 +155,7 @@ For more complex regression models or matrix operations, you might explore Go li
 
 My thoughts on these suggestions are as follows:
 
-1. **Error handling for slope and intercept calculation:** My code already does this.  Excellent suggestion, though it os a disappointment to see this rate #1.
+1. **Error handling for slope and intercept calculation:** My code already does this.  Excellent suggestion, though it is a disappointment to see this rate #1.
 2. **Modular code:** Because the project was a comaprison of existing libraries, this was not a priority but in general this is a good software development goal.
 3. **Statistical metrics:** Agreed, my linear regression function only calculates slope and intercept.  The lack of a robust, all-inclusive regression function is a limitation of `montanaflynn/stats`.
 4. **k-fold cross validation:** This is well beyond the scope of the project, but I do agree that a publication-worthy comparison of regression capabilities would test [k-fold validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)) as well.
