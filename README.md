@@ -82,3 +82,20 @@ ChapGPT responded by checking if the first two _x_ values are equal:
 This of course is insufficient; we need to only abandon the slope calculation if _all_ _x_ values are equal:
 
 > if the first two x values are equal, could we check to see if there are any two x values that are different and use those coordinates to get a slope?
+
+After this prompt, ChatGPT gave a response that logically resembled the program I had written already using `montanaflynn/stats`.  There was one inefficient `for` loop written though, iterating through the _x_ values in the coordinate pairs returned by the `stats.LinearRegression` function:
+
+```
+// Find first pair with different X values
+	for i := 0; i < len(coords); i++ {
+		for j := i + 1; j < len(coords); j++ {
+			if coords[i].X != coords[j].X {
+				slope = (coords[j].Y - coords[i].Y) / (coords[j].X - coords[i].X)
+				intercept = coords[i].Y - slope*coords[i].X
+				return slope, intercept, nil
+			}
+		}
+	}
+```
+
+It is unneccessary to loop through all _x_ values, searching all remaining _x_ values for equality; if all _x_ values match `coords[0].X` then all are equal, the line is vertical, and there is no need to search further.  I stopped my ChatGPT session here.
