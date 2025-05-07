@@ -99,3 +99,66 @@ After this prompt, ChatGPT gave a response that logically resembled the program 
 ```
 
 It is unneccessary to loop through all _x_ values, searching all remaining _x_ values for equality; if all _x_ values match `coords[0].X` then all are equal, the line is vertical, and there is no need to search further.  I stopped my ChatGPT session here.
+
+### AI Code Revision With ChatGPT
+
+I asked ChatGPT to look at my code for the assignment as it was submitted:
+
+> I've already written a program to perform linear regression on Anscombe's Quartet.  The Go code is at [https://github.com/chrisbcaldwell/OLS\_Comparison/blob/main/Go/anscombe/anscombe.go](https://github.com/chrisbcaldwell/OLS_Comparison/blob/main/Go/anscombe/anscombe.go).  Could you suggest improvements?
+
+ChatGPT offered a list of suggestions without code implementation details, instead offereing that it could go into more detail if desired:
+
+✅ 1. **Error Handling for Duplicate X Values**
+
+In datasets like Anscombe's Quartet, duplicate `X` values can lead to division by zero when calculating the slope. Implementing a check to identify and handle such cases is crucial. Consider iterating through the dataset to find any two points with different `X` values before computing the slope.
+
+✅ 2. **Modularize Code for Reusability**
+
+Breaking down your code into smaller, reusable functions can improve readability and maintainability. For instance:
+
+* **Data Loading**: Separate function to load and parse the dataset.
+* **Linear Regression**: Encapsulate the regression logic in its own function.
+* **Visualization**: Create a function dedicated to plotting the results.
+
+✅ 3. **Enhance Output with Statistical Metrics**
+
+Providing additional statistical metrics can offer deeper insights into the regression model's performance:
+
+* **Mean Squared Error (MSE)**: Indicates the average squared difference between observed and predicted values.
+* **R-squared (R²)**: Measures the proportion of variance in the dependent variable that's predictable from the independent variable.
+
+These metrics can help assess the fit quality of your regression model.([skillcamper.com][1])
+
+✅ 4. **Implement Cross-Validation**
+
+To evaluate the generalizability of your model, consider implementing k-fold cross-validation. This technique splits the dataset into k subsets, training the model k times, each time using a different subset as the test set and the remaining as the training set. It provides a more reliable estimate of model performance.([DataScienceBase][2])
+
+✅ 5. **Optimize Performance for Larger Datasets**
+
+While Anscombe's Quartet is small, if you plan to scale your implementation to larger datasets, consider:
+
+* **Efficient Data Structures**: Use slices or arrays for storing data points to minimize overhead.
+* **Parallel Processing**: For computationally intensive tasks, leverage Go's goroutines to parallelize operations.
+
+✅ 6. **Improve Code Documentation**
+
+Adding comments and documentation to your code can make it more understandable for others and for future you:
+
+* **Function Comments**: Describe the purpose and parameters of each function.
+* **Inline Comments**: Explain complex or non-intuitive code sections.([WIRED][3])
+
+✅ 7. **Consider Using a Linear Algebra Library**
+
+For more complex regression models or matrix operations, you might explore Go libraries like `gonum` or `golearn`. These libraries offer optimized functions for linear algebra and machine learning tasks.
+
+---
+
+My thoughts on these suggestions are as follows:
+
+1. **Error handling for slope and intercept calculation:** My code already does this.  Excellent suggestion, though it os a disappointment to see this rate #1.
+2. **Modular code:** Because the project was a comaprison of existing libraries, this was not a priority but in general this is a good software development goal.
+3. **Statistical metrics:** Agreed, my linear regression function only calculates slope and intercept.  The lack of a robust, all-inclusive regression function is a limitation of `montanaflynn/stats`.
+4. **k-fold cross validation:** This is well beyond the scope of the project, but I do agree that a publication-worthy comparison of regression capabilities would test [k-fold validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)) as well.
+5. **Optimization:** Data structure efficiency is a tradeoff while using `montanaflynn/stats`; the `Series` and `Coordinate` types used in the package break the data into coordinate pairs.  Linear regression is a straight-forward matrix calculation and something more resembling a data frame in R or Python would perform much better.
+6. **Documentation:** I think my code sufficiently descsribes its goals, given that the user should already be experienced in statistical methods.  This is easily actionable advice though and I will check to see what I can improve.
+7. **Linear algebra library:** This is the best suggestion offered, and seeing it as the very last one is not encouraging.
