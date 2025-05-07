@@ -15,7 +15,7 @@ GitHub Copilot was used to suggest edits to the Go code in [Go for Statistics](h
 
 > chrisbcaldwell: what's the best way to implement R squared and standard error of regression into this code?
 
-The result of this query was great!  Copilot suggesting the code below to implement R-squared and standard error into whaat I had aleady written.  I could not find errors in a quick code review.
+The result of this query was great!  Copilot suggesting the code below to implement R-squared and standard error into what I had aleady written.  I could not find errors in a quick code review.
 
 ```
 // calculateMetrics computes R-squared and standard error of regression
